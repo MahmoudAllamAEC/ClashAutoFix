@@ -62,7 +62,7 @@ Cutting openings for MEP penetrations is one of the most repetitive, error-prone
 <!-- Add your actual screenshots below -->
 <!-- Drag screenshots into the repo under docs/screenshots/ then update these paths -->
 
-| Plugin UI | Scan Preview | Openings Cut |
+| Plugin UI | Before | Openings Cut |
 |---|---|---|
 | ![UI](https://github.com/MahmoudAllamAEC/ClashAutoFix/blob/master/Snipaste_2026-07-23_23-02-58.png) | ![Before](https://github.com/MahmoudAllamAEC/ClashAutoFix/blob/master/Snipaste_2026-07-23_23-05-01.png) | ![Result](https://github.com/MahmoudAllamAEC/ClashAutoFix/blob/master/Snipaste_2026-07-23_23-04-14.png) |
 
