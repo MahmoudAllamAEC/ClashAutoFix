@@ -1,0 +1,13 @@
+<Project>
+
+  <!-- MSBuild reads this file before any project in this folder. The 2025
+       project's output paths must be set this early, or NuGet writes its
+       bookkeeping into the 2024 project's obj\ folder (warning MSB3539).
+       The condition keeps the 2024 project (ClashAutoFix.csproj) unaffected. -->
+  <PropertyGroup Condition="'$(MSBuildProjectFile)' == 'ClashAutoFix.2025.csproj'">
+    <BaseOutputPath>bin.2025\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj.2025\</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>obj.2025\</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+
+</Project>

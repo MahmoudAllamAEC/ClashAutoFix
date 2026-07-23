@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Clash Auto Fix</Name>
+    <Assembly>ClashAutoFix.dll</Assembly>
+    <FullClassName>ClashAutoFix.Revit.Entry.ExtApp</FullClassName>
+    <AddInId>0F253525-94DB-41BB-88B5-FAD7D437AAC8</AddInId>
+    <VendorId>Mahmoud Allam</VendorId>
+    <VendorDescription>mahmoud.amr55@gmail.com</VendorDescription>
+  </AddIn>
+</RevitAddIns> 

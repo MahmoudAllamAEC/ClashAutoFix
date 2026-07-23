@@ -1,0 +1,174 @@
+<Window x:Class="ClashAutoFix.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Clash Auto Fix" Height="480" Width="420"
+        MinWidth="400" MinHeight="450"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F6F8">
+
+    <!-- The tool window. Controls bind to MainViewModel; the styling below is a flat,
+         accent-driven look with a "caption over panel" rhythm for each group of options. -->
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="Accent"      Color="#1FA9E0"/>
+        <SolidColorBrush x:Key="AccentDark"  Color="#1791C4"/>
+        <SolidColorBrush x:Key="TitleText"   Color="#333333"/>
+        <SolidColorBrush x:Key="PanelBorder" Color="#D7DDE5"/>
+
+        <!-- Flat tool button -->
+        <Style x:Key="FlatButton" TargetType="Button">
+            <Setter Property="MinWidth" Value="96"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Background" Value="#F8F9FB"/>
+            <Setter Property="BorderBrush" Value="#C6CCD4"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#2B2B2B"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" CornerRadius="3"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#E8F4FC"/>
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{StaticResource Accent}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Primary (accent) button — the main action -->
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource FlatButton}">
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentDark}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="Caption" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#445"/>
+            <Setter Property="Margin" Value="14,8,12,3"/>
+        </Style>
+
+        <!-- White bordered panel that each group of settings sits in -->
+        <Style x:Key="Panel" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PanelBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="3"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Margin" Value="12,0,12,0"/>
+        </Style>
+
+        <Style x:Key="Opt" TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,2,4,2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>   <!-- header: accent strip + title -->
+            <RowDefinition Height="Auto"/>   <!-- hosts caption -->
+            <RowDefinition Height="Auto"/>   <!-- hosts panel -->
+            <RowDefinition Height="Auto"/>   <!-- services caption -->
+            <RowDefinition Height="Auto"/>   <!-- services panel -->
+            <RowDefinition Height="Auto"/>   <!-- options caption -->
+            <RowDefinition Height="Auto"/>   <!-- options panel -->
+            <RowDefinition Height="Auto"/>   <!-- status caption -->
+            <RowDefinition Height="*"/>      <!-- status panel: absorbs the resize -->
+            <RowDefinition Height="Auto"/>   <!-- actions: both buttons, equal size -->
+        </Grid.RowDefinitions>
+
+        <!-- Header: accent strip over the title. -->
+        <Border Grid.Row="0" Background="White"
+                BorderBrush="{StaticResource PanelBorder}" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <Border Height="4" Background="{StaticResource Accent}"/>
+                <TextBlock Text="Clash Auto Fix"
+                           FontSize="18" FontWeight="SemiBold"
+                           Foreground="{StaticResource TitleText}"
+                           Margin="14,7,12,8"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Host categories. UniformGrid = equal columns, so the boxes sit evenly
+             across the full width instead of bunching up on the left. -->
+        <TextBlock Grid.Row="1" Style="{StaticResource Caption}" Text="Cut openings in"/>
+        <Border Grid.Row="2" Style="{StaticResource Panel}">
+            <UniformGrid Rows="1" Columns="5">
+                <CheckBox Content="Walls"    IsChecked="{Binding Settings.IncludeWalls}"    Style="{StaticResource Opt}"/>
+                <CheckBox Content="Floors"   IsChecked="{Binding Settings.IncludeFloors}"   Style="{StaticResource Opt}"/>
+                <CheckBox Content="Beams"    IsChecked="{Binding Settings.IncludeBeams}"    Style="{StaticResource Opt}"/>
+                <CheckBox Content="Columns"  IsChecked="{Binding Settings.IncludeColumns}"  Style="{StaticResource Opt}"/>
+                <CheckBox Content="Ceilings" IsChecked="{Binding Settings.IncludeCeilings}" Style="{StaticResource Opt}"/>
+            </UniformGrid>
+        </Border>
+
+        <!-- MEP categories -->
+        <TextBlock Grid.Row="3" Style="{StaticResource Caption}" Text="For services"/>
+        <Border Grid.Row="4" Style="{StaticResource Panel}">
+            <UniformGrid Rows="1" Columns="4">
+                <CheckBox Content="Pipes"       IsChecked="{Binding Settings.IncludePipes}"      Style="{StaticResource Opt}"/>
+                <CheckBox Content="Ducts"       IsChecked="{Binding Settings.IncludeDucts}"      Style="{StaticResource Opt}"/>
+                <CheckBox Content="Cable Trays" IsChecked="{Binding Settings.IncludeCableTrays}" Style="{StaticResource Opt}"/>
+                <CheckBox Content="Conduits"    IsChecked="{Binding Settings.IncludeConduits}"   Style="{StaticResource Opt}"/>
+            </UniformGrid>
+        </Border>
+
+        <!-- Options: tolerance + the along-the-host switch -->
+        <TextBlock Grid.Row="5" Style="{StaticResource Caption}" Text="Options"/>
+        <Border Grid.Row="6" Style="{StaticResource Panel}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <CheckBox Content="Tolerance" IsChecked="{Binding UseTolerance}"
+                              VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox Width="52" Padding="3,2" VerticalContentAlignment="Center"
+                             Text="{Binding ToleranceMm, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="mm clearance each side"
+                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                </StackPanel>
+
+                <!-- Turns off the "runs along the host" veto. Unchecked by default — cutting
+                     a service that runs ALONG a host carves a continuous trench through the
+                     structure, so it has to be a deliberate choice. -->
+                <CheckBox Content="Cut services running along hosts"
+                          IsChecked="{Binding Settings.CutServicesAlongHosts}"
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Status / preview area -->
+        <TextBlock Grid.Row="7" Style="{StaticResource Caption}" Text="Status"/>
+        <Border Grid.Row="8" Style="{StaticResource Panel}" MinHeight="44">
+            <TextBlock Text="{Binding Status}" TextWrapping="Wrap"
+                       Foreground="#334455" VerticalAlignment="Top"/>
+        </Border>
+
+        <!-- Actions: both buttons get the full-width bar treatment, stacked in the order
+             they are used — scan first, then create. Same width, same height, same font. -->
+        <StackPanel Grid.Row="9" Margin="12,10,12,12">
+            <Button Content="Scan" Command="{Binding ScanCommand}"
+                    Style="{StaticResource FlatButton}"
+                    Height="44" FontSize="16" MinWidth="0"
+                    Margin="0,0,0,8" HorizontalAlignment="Stretch"/>
+            <Button Content="Create Openings" Command="{Binding CreateCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Height="44" FontSize="16" MinWidth="0"
+                    Margin="0" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Builds the SAME source files as ClashAutoFix.csproj, but for Revit 2025+
+       (which runs add-ins on .NET 8 instead of .NET Framework 4.8).
+       Own obj/bin folders so the two builds never collide.
+       Build with:  dotnet build ClashAutoFix.2025.csproj -c Release  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>ClashAutoFix</RootNamespace>
+    <AssemblyName>ClashAutoFix</AssemblyName>
+    <PlatformTarget>x64</PlatformTarget>
+    <!-- Same C# level as the 2024 project, so shared code can never use
+         syntax that one of the two builds can't compile. -->
+    <LangVersion>7.3</LangVersion>
+    <!-- Properties\AssemblyInfo.cs already exists — don't generate a second one. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Output paths (bin.2025\, obj.2025\) are set in Directory.Build.props —
+         they must be defined before MSBuild starts, not here. -->
+    <!-- This project auto-includes every .cs/.xaml in the folder. The 2024
+         project's build output contains GENERATED code — keep it out. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);bin\**;obj\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <!-- Revit 2025 API. Copy Local off — Revit provides these at runtime. -->
+  <ItemGroup>
+    <Reference Include="RevitAPI">
+      <HintPath>..\..\..\..\revit api dll from 2022 to 2026\2025\revit_all_main_versions_api_x64.2025.0.0\lib\net8.0\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\..\..\..\revit api dll from 2022 to 2026\2025\revit_all_main_versions_api_x64.2025.0.0\lib\net8.0\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Legacy Visual Studio resource designer files — unused by the code (icons
+       and families are loaded from the assembly manifest, not Properties.Resources)
+       and their System.Drawing types don't exist on .NET 8. Skip them here. -->
+  <ItemGroup>
+    <Compile Remove="Properties\Resources.Designer.cs" />
+    <EmbeddedResource Remove="Properties\Resources.resx" />
+  </ItemGroup>
+
+  <!-- Embedded payload: ribbon/window icons + the two sleeve families.
+       (SDK projects only auto-include code, not binary resources.) -->
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\icons8-merge-horizontal-16.png" />
+    <EmbeddedResource Include="Resources\icons8-merge-horizontal-24.png" />
+    <EmbeddedResource Include="Resources\icons8-merge-horizontal-32.png" />
+    <EmbeddedResource Include="Resources\CAF_Sleeve_Round.rfa" />
+    <EmbeddedResource Include="Resources\CAF_Sleeve_Rect.rfa" />
+  </ItemGroup>
+
+</Project>

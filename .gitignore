@@ -1,0 +1,21 @@
+# ---- Build output ----
+bin/
+obj/
+bin.2025/
+obj.2025/
+
+# ---- Visual Studio ----
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# ---- Rider / ReSharper ----
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+# ---- OS clutter ----
+Thumbs.db
+Desktop.ini
+.DS_Store
